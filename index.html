@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>RETOPREPARATE</title>
+    <style>
+        /* ... estilos existentes ... */
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            text-align: center;
+            padding: 0;
+            margin: 0;
+            background: linear-gradient(135deg, #e0e7ff 0%, #f0f4f8 100%);
+            min-height: 100vh;
+        }
+        #login, #app {
+            margin-top: 60px;
+        }
+        .hidden {
+            display: none;
+        }
+        .tabs {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 25px;
+            gap: 10px;
+        }
+        .tab-button {
+            padding: 12px 28px;
+            cursor: pointer;
+            border: none;
+            background: linear-gradient(90deg, #007BFF 60%, #0056b3 100%);
+            color: white;
+            font-weight: 500;
+            font-size: 17px;
+            margin: 0 2px;
+            border-radius: 25px 25px 0 0;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+            transition: background 0.2s, transform 0.1s;
+        }
+        .tab-button.active, .tab-button:hover {
+            background: linear-gradient(90deg, #0056b3 60%, #007BFF 100%);
+            transform: translateY(-2px) scale(1.04);
+        }
+        .tab-content {
+            border: 1.5px solid #c3dafe;
+            padding: 28px 30px 18px 30px;
+            background: #fff;
+            border-radius: 0 0 12px 12px;
+            max-width: 480px;
+            margin: auto;
+            box-shadow: 0 4px 24px rgba(0,0,0,0.07);
+            text-align: left;
+            margin-bottom: 30px;
+            animation: fadeIn 0.4s;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px);}
+            to { opacity: 1; transform: translateY(0);}
+        }
+        h1 {
+            color: #1e293b;
+            margin-bottom: 30px;
+            font-size: 2.2em;
+            letter-spacing: 1px;
+        }
+        h2 {
+            color: #2563eb;
+            margin-bottom: 18px;
+            font-size: 1.3em;
+        }
+        .question {
+            margin-bottom: 18px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #e5e7eb;
+        }
+        .question:last-child {
+            border-bottom: none;
+        }
+        .question p {
+            margin-bottom: 7px;
+            font-weight: 500;
+            color: #334155;
+        }
+        input[type="radio"] {
+            accent-color: #2563eb;
+            margin-right: 7px;
+        }
+        input[type="password"] {
+            padding: 12px;
+            font-size: 17px;
+            border: 1.5px solid #c3dafe;
+            border-radius: 7px;
+            margin-bottom: 10px;
+            width: 220px;
+            background: #f8fafc;
+            transition: border 0.2s;
+        }
+        input[type="password"]:focus {
+            border: 1.5px solid #2563eb;
+            outline: none;
+        }
+        button {
+            padding: 11px 28px;
+            font-size: 17px;
+            border: none;
+            border-radius: 7px;
+            background: linear-gradient(90deg, #2563eb 60%, #60a5fa 100%);
+            color: white;
+            font-weight: 500;
+            margin-top: 10px;
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(37,99,235,0.08);
+            transition: background 0.2s, transform 0.1s;
+        }
+        button:hover {
+            background: linear-gradient(90deg, #1d4ed8 60%, #2563eb 100%);
+            transform: scale(1.03);
+        }
+        #error {
+            color: #ef4444;
+            margin-top: 10px;
+            font-weight: 500;
+        }
+        #result {
+            color: #2563eb;
+            font-weight: 600;
+            margin-top: 18px;
+            font-size: 1.2em;
+            text-align: center;
+        }
+        @media (max-width: 600px) {
+            .tab-content {
+                max-width: 98vw;
+                padding: 18px 5vw 10px 5vw;
+            }
+            .tabs {
+                flex-direction: column;
+                gap: 6px;
+            }
+            .tab-button {
+                border-radius: 18px;
+                font-size: 15px;
+                padding: 10px 0;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Pantalla de inicio -->
+    <div id="login">
+        <h2>Ingrese el PIN para acceder</h2>
+        <input type="password" id="pin" placeholder="Ingrese PIN">
+        <br>
+        <button onclick="checkPIN()">Entrar</button>
+        <p id="error"></p>
+    </div>
+
+    <!-- Aplicación principal -->
+    <div id="app" class="hidden">
+        <h1>Evaluaciones RETOPREPARATE</h1>
+
+        <div class="tabs">
+            <button class="tab-button active" onclick="showTab('matematicas', event)">Matemáticas</button>
+            <button class="tab-button" onclick="showTab('fisica', event)">Física</button>
+            <button class="tab-button" onclick="showTab('quimica', event)">Química</button>
+            <button class="tab-button" onclick="showTab('lenguaje', event)">Lenguaje</button>
+        </div>
+
+        <!-- Contenido Matemáticas -->
+        <div id="matematicas" class="tab-content">
+            <h2>Evaluación de Matemáticas</h2>
+            <div class="question">
+                <p>1. ¿Cuánto es 5 + 7?</p>
+                <label><input type="radio" name="m1" value="a"> 10</label><br>
+                <label><input type="radio" name="m1" value="b"> 12</label><br>
+                <label><input type="radio" name="m1" value="c"> 13</label>
+            </div>
+            <div class="question">
+                <p>2. ¿Cuánto es 9 x 6?</p>
+                <label><input type="radio" name="m2" value="a"> 54</label><br>
+                <label><input type="radio" name="m2" value="b"> 64</label><br>
+                <label><input type="radio" name="m2" value="c"> 49</label>
+            </div>
+            <div class="question">
+                <p>3. ¿Cuál es la raíz cuadrada de 81?</p>
+                <label><input type="radio" name="m3" value="a"> 8</label><br>
+                <label><input type="radio" name="m3" value="b"> 9</label><br>
+                <label><input type="radio" name="m3" value="c"> 7</label>
+            </div>
+            <div class="question">
+                <p>4. ¿Cuánto es 15 - 4?</p>
+                <label><input type="radio" name="m4" value="a"> 9</label><br>
+                <label><input type="radio" name="m4" value="b"> 11</label><br>
+                <label><input type="radio" name="m4" value="c"> 12</label>
+            </div>
+            <div class="question">
+                <p>5. ¿Cuánto es 3<sup>2</sup>?</p>
+                <label><input type="radio" name="m5" value="a"> 6</label><br>
+                <label><input type="radio" name="m5" value="b"> 9</label><br>
+                <label><input type="radio" name="m5" value="c"> 12</label>
+            </div>
+            <!-- Pregunta 6 -->
+            <div class="question">
+                <p>6. Si un triángulo tiene lados de 3, 4 y 5, ¿cuál es su área?</p>
+                <label><input type="radio" name="m6" value="a"> 6</label><br>
+                <label><input type="radio" name="m6" value="b"> 12</label><br>
+                <label><input type="radio" name="m6" value="c"> 7.5</label>
+            </div>
+            <!-- Pregunta 7 -->
+            <div class="question">
+                <p>7. ¿Cuál es el resultado de 2<sup>3</sup> + 4?</p>
+                <label><input type="radio" name="m7" value="a"> 10</label><br>
+                <label><input type="radio" name="m7" value="b"> 12</label><br>
+                <label><input type="radio" name="m7" value="c"> 8</label>
+            </div>
+            <!-- Pregunta 8 -->
+            <div class="question">
+                <p>8. ¿Cuál es el valor de x en la ecuación 2x + 4 = 10?</p>
+                <label><input type="radio" name="m8" value="a"> 2</label><br>
+                <label><input type="radio" name="m8" value="b"> 3</label><br>
+                <label><input type="radio" name="m8" value="c"> 4</label>
+            </div>
+            <button onclick="calificar('matematicas')">Ver calificación</button>
+            <div id="result-matematicas"></div>
+        </div>
+
+        <!-- Contenido Física -->
+        <div id="fisica" class="tab-content hidden">
+            <h2>Evaluación de Física</h2>
+            <div class="question">
+                <p>1. ¿Cuál es la fórmula de la velocidad?</p>
+                <label><input type="radio" name="f1" value="a"> distancia / tiempo</label><br>
+                <label><input type="radio" name="f1" value="b"> masa x aceleración</label><br>
+                <label><input type="radio" name="f1" value="c"> fuerza / área</label>
+            </div>
+            <div class="question">
+                <p>2. ¿Cuál es la unidad de fuerza?</p>
+                <label><input type="radio" name="f2" value="a"> Joule</label><br>
+                <label><input type="radio" name="f2" value="b"> Newton</label><br>
+                <label><input type="radio" name="f2" value="c"> Pascal</label>
+            </div>
+            <div class="question">
+                <p>3. ¿Qué instrumento mide la masa?</p>
+                <label><input type="radio" name="f3" value="a"> Termómetro</label><br>
+                <label><input type="radio" name="f3" value="b"> Balanza</label><br>
+                <label><input type="radio" name="f3" value="c"> Regla</label>
+            </div>
+            <div class="question">
+                <p>4. ¿Cuál es la aceleración de la gravedad en la Tierra?</p>
+                <label><input type="radio" name="f4" value="a"> 9.8 m/s²</label><br>
+                <label><input type="radio" name="f4" value="b"> 10 m/s</label><br>
+                <label><input type="radio" name="f4" value="c"> 8.9 m/s²</label>
+            </div>
+            <div class="question">
+                <p>5. ¿Qué es un Newton?</p>
+                <label><input type="radio" name="f5" value="a"> Unidad de energía</label><br>
+                <label><input type="radio" name="f5" value="b"> Unidad de fuerza</label><br>
+                <label><input type="radio" name="f5" value="c"> Unidad de presión</label>
+            </div>
+            <!-- Pregunta 6 -->
+            <div class="question">
+                <p>6. ¿Qué ocurre con la energía en una colisión elástica?</p>
+                <label><input type="radio" name="f6" value="a"> Se pierde totalmente</label><br>
+                <label><input type="radio" name="f6" value="b"> Se conserva</label><br>
+                <label><input type="radio" name="f6" value="c"> Se duplica</label>
+            </div>
+            <!-- Pregunta 7 -->
+            <div class="question">
+                <p>7. ¿Cuál es la unidad de medida de la presión en el SI?</p>
+                <label><input type="radio" name="f7" value="a"> Pascal</label><br>
+                <label><input type="radio" name="f7" value="b"> Newton</label><br>
+                <label><input type="radio" name="f7" value="c"> Joule</label>
+            </div>
+            <!-- Pregunta 8 -->
+            <div class="question">
+                <p>8. ¿Qué magnitud se mide con un amperímetro?</p>
+                <label><input type="radio" name="f8" value="a"> Resistencia</label><br>
+                <label><input type="radio" name="f8" value="b"> Corriente eléctrica</label><br>
+                <label><input type="radio" name="f8" value="c"> Voltaje</label>
+            </div>
+            <button onclick="calificar('fisica')">Ver calificación</button>
+            <div id="result-fisica"></div>
+        </div>
+
+        <!-- Contenido Química -->
+        <div id="quimica" class="tab-content hidden">
+            <h2>Evaluación de Química</h2>
+            <div class="question">
+                <p>1. ¿Cuál es el símbolo del Oxígeno?</p>
+                <label><input type="radio" name="q1" value="a"> Ox</label><br>
+                <label><input type="radio" name="q1" value="b"> H</label><br>
+                <label><input type="radio" name="q1" value="c"> O</label>
+            </div>
+            <div class="question">
+                <p>2. ¿Qué tipo de enlace hay en el H<sub>2</sub>O?</p>
+                <label><input type="radio" name="q2" value="a"> Covalente</label><br>
+                <label><input type="radio" name="q2" value="b"> Iónico</label><br>
+                <label><input type="radio" name="q2" value="c"> Metálico</label>
+            </div>
+            <div class="question">
+                <p>3. ¿Cuál es el número atómico del Carbono?</p>
+                <label><input type="radio" name="q3" value="a"> 6</label><br>
+                <label><input type="radio" name="q3" value="b"> 12</label><br>
+                <label><input type="radio" name="q3" value="c"> 8</label>
+            </div>
+            <div class="question">
+                <p>4. ¿Qué es un átomo?</p>
+                <label><input type="radio" name="q4" value="a"> Una molécula</label><br>
+                <label><input type="radio" name="q4" value="b"> La partícula más pequeña de un elemento</label><br>
+                <label><input type="radio" name="q4" value="c"> Un ion</label>
+            </div>
+            <div class="question">
+                <p>5. ¿Cuál es el pH del agua pura?</p>
+                <label><input type="radio" name="q5" value="a"> 7</label><br>
+                <label><input type="radio" name="q5" value="b"> 1</label><br>
+                <label><input type="radio" name="q5" value="c"> 14</label>
+            </div>
+            <!-- Pregunta 6 -->
+            <div class="question">
+                <p>6. ¿Cuál es el gas más abundante en la atmósfera terrestre?</p>
+                <label><input type="radio" name="q6" value="a"> Nitrógeno</label><br>
+                <label><input type="radio" name="q6" value="b"> Oxígeno</label><br>
+                <label><input type="radio" name="q6" value="c"> Dióxido de carbono</label>
+            </div>
+            <!-- Pregunta 7 -->
+            <div class="question">
+                <p>7. ¿Qué partícula tiene carga negativa?</p>
+                <label><input type="radio" name="q7" value="a"> Electrón</label><br>
+                <label><input type="radio" name="q7" value="b"> Protón</label><br>
+                <label><input type="radio" name="q7" value="c"> Neutrón</label>
+            </div>
+            <!-- Pregunta 8 -->
+            <div class="question">
+                <p>8. ¿Cuál es el estado de agregación del mercurio a temperatura ambiente?</p>
+                <label><input type="radio" name="q8" value="a"> Líquido</label><br>
+                <label><input type="radio" name="q8" value="b"> Sólido</label><br>
+                <label><input type="radio" name="q8" value="c"> Gaseoso</label>
+            </div>
+            <button onclick="calificar('quimica')">Ver calificación</button>
+            <div id="result-quimica"></div>
+        </div>
+
+        <!-- Contenido Lenguaje -->
+        <div id="lenguaje" class="tab-content hidden">
+            <h2>Evaluación de Lenguaje</h2>
+            <div class="question">
+                <p>1. ¿Cuál es el verbo en la oración: "María corre todos los días"?</p>
+                <label><input type="radio" name="l1" value="a"> María</label><br>
+                <label><input type="radio" name="l1" value="b"> corre</label><br>
+                <label><input type="radio" name="l1" value="c"> días</label>
+            </div>
+            <div class="question">
+                <p>2. ¿Qué tipo de palabra es "rápidamente"?</p>
+                <label><input type="radio" name="l2" value="a"> Adjetivo</label><br>
+                <label><input type="radio" name="l2" value="b"> Verbo</label><br>
+                <label><input type="radio" name="l2" value="c"> Adverbio</label>
+            </div>
+            <div class="question">
+                <p>3. ¿Cuál es el antónimo de "feliz"?</p>
+                <label><input type="radio" name="l3" value="a"> Triste</label><br>
+                <label><input type="radio" name="l3" value="b"> Alegre</label><br>
+                <label><input type="radio" name="l3" value="c"> Contento</label>
+            </div>
+            <div class="question">
+                <p>4. ¿Qué es un sustantivo?</p>
+                <label><input type="radio" name="l4" value="a"> Una acción</label><br>
+                <label><input type="radio" name="l4" value="b"> Un nombre de persona, lugar o cosa</label><br>
+                <label><input type="radio" name="l4" value="c"> Una cualidad</label>
+            </div>
+            <div class="question">
+                <p>5. ¿Cuál es el plural de "lápiz"?</p>
+                <label><input type="radio" name="l5" value="a"> Lápices</label><br>
+                <label><input type="radio" name="l5" value="b"> Lápizs</label><br>
+                <label><input type="radio" name="l5" value="c"> Lápiz</label>
+            </div>
+            <!-- Pregunta 6 -->
+            <div class="question">
+                <p>6. ¿Cuál es el sujeto en la oración: "El perro duerme en la casa"?</p>
+                <label><input type="radio" name="l6" value="a"> duerme</label><br>
+                <label><input type="radio" name="l6" value="b"> El perro</label><br>
+                <label><input type="radio" name="l6" value="c"> la casa</label>
+            </div>
+            <!-- Pregunta 7 -->
+            <div class="question">
+                <p>7. ¿Qué figura literaria consiste en exagerar cualidades?</p>
+                <label><input type="radio" name="l7" value="a"> Metáfora</label><br>
+                <label><input type="radio" name="l7" value="b"> Hipérbole</label><br>
+                <label><input type="radio" name="l7" value="c"> Personificación</label>
+            </div>
+            <!-- Pregunta 8 -->
+            <div class="question">
+                <p>8. ¿Cuál es el sinónimo de "rápido"?</p>
+                <label><input type="radio" name="l8" value="a"> Lento</label><br>
+                <label><input type="radio" name="l8" value="b"> Veloz</label><br>
+                <label><input type="radio" name="l8" value="c"> Pequeño</label>
+            </div>
+            <button onclick="calificar('lenguaje')">Ver calificación</button>
+            <div id="result-lenguaje"></div>
+        </div>
+    </div>
+    <script>
+        function checkPIN() {
+            const pin = document.getElementById('pin').value;
+            const error = document.getElementById('error');
+            if (pin === "1234") {
+                document.getElementById('login').classList.add('hidden');
+                document.getElementById('app').classList.remove('hidden');
+                error.textContent = "";
+            } else {
+                error.textContent = "PIN incorrecto. Intenta de nuevo.";
+            }
+        }
+
+        function showTab(tabId, event) {
+            const tabs = document.querySelectorAll('.tab-content');
+            tabs.forEach(tab => tab.classList.add('hidden'));
+
+            const buttons = document.querySelectorAll('.tab-button');
+            buttons.forEach(btn => btn.classList.remove('active'));
+
+            document.getElementById(tabId).classList.remove('hidden');
+            if (event && event.target) {
+                event.target.classList.add('active');
+            }
+        }
+
+        // Respuestas correctas para cada evaluación (8 preguntas por materia)
+        const respuestas = {
+            matematicas: ['b', 'a', 'b', 'b', 'b', 'a', 'a', 'c'],
+            fisica: ['a', 'b', 'b', 'a', 'b', 'b', 'a', 'b'],
+            quimica: ['c', 'a', 'a', 'b', 'a', 'a', 'a', 'a'],
+            lenguaje: ['b', 'c', 'a', 'b', 'a', 'b', 'b', 'b']
+        };
+
+        function calificar(tab) {
+            let correctas = 0;
+            // 8 preguntas por materia
+            for (let i = 1; i <= 8; i++) {
+                const radios = document.getElementsByName(tab[0] + i);
+                let seleccionada = '';
+                for (const radio of radios) {
+                    if (radio.checked) {
+                        seleccionada = radio.value;
+                        break;
+                    }
+                }
+                if (seleccionada === respuestas[tab][i - 1]) {
+                    correctas++;
+                }
+            }
+            document.getElementById('result-' + tab).innerHTML =
+                `Obtuviste <strong>${correctas}</strong> de 8 respuestas correctas.`;
+        }
+    </script>
+</body>
+</html></div>
+            </div>
+            <button onclick="calificar('quimica')">Ver calificación</button>
+            <div id="result-quimica"></div>
+        </div>
+
+        <!-- Contenido Lenguaje -->
+        <div id="lenguaje" class="tab-content hidden">
+            <h2>Evaluación de Lenguaje</h2>
+            <div class="question">
+                <p>1. ¿Cuál es el verbo en la oración: "María corre todos los días"?</p>
+                <label><input type="radio" name="l1" value="a"> María</label><br>
+                <label><input type="radio" name="l1" value="b"> corre</label><br>
+                <label><input type="radio" name="l1" value="c"> días</label>
+            </div>
+            <div class="question">
+                <p>2. ¿Qué tipo de palabra es "rápidamente"?</p>
+                <label><input type="radio" name="l2" value="a"> Adjetivo</label><br>
+                <label><input type="radio" name="l2" value="b"> Verbo</label><br>
+                <label><input type="radio" name="l2" value="c"> Adverbio</label>
+            </div>
+            <div class="question">
+                <p>3. ¿Cuál es el antónimo de "feliz"?</p>
+                <label><input type="radio" name="l3" value="a"> Triste</label><br>
+                <label><input type="radio" name="l3" value="b"> Alegre</label><br>
+                <label><input type="radio" name="l3" value="c"> Contento</label>
+            </div>
+            <div class="question">
+                <p>4. ¿Qué es un sustantivo?</p>
+                <label><input type="radio" name="l4" value="a"> Una acción</label><br>
+                <label><input type="radio" name="l4" value="b"> Un nombre de persona, lugar o cosa</label><br>
+                <label><input type="radio" name="l4" value="c"> Una cualidad</label>
+            </div>
+            <div class="question">
+                <p>5. ¿Cuál es el plural de "lápiz"?</p>
+                <label><input type="radio" name="l5" value="a"> Lápices</label><br>
+                <label><input type="radio" name="l5" value="b"> Lápizs</label><br>
+                <label><input type="radio" name="l5" value="c"> Lápiz</label>
+            </div>
+            <button onclick="calificar('lenguaje')">Ver calificación</button>
+            <div id="result-lenguaje"></div>
+        </div>
+    </div>
+
+    <script>
+        function checkPIN() {
+            const pin = document.getElementById('pin').value;
+            const error = document.getElementById('error');
+            if (pin === "1234") {
+                document.getElementById('login').classList.add('hidden');
+                document.getElementById('app').classList.remove('hidden');
+                error.textContent = "";
+            } else {
+                error.textContent = "PIN incorrecto. Intenta de nuevo.";
+            }
+        }
+
+        function showTab(tabId, event) {
+            const tabs = document.querySelectorAll('.tab-content');
+            tabs.forEach(tab => tab.classList.add('hidden'));
+
+            const buttons = document.querySelectorAll('.tab-button');
+            buttons.forEach(btn => btn.classList.remove('active'));
+
+            document.getElementById(tabId).classList.remove('hidden');
+            if (event && event.target) {
+                event.target.classList.add('active');
+            }
+        }
+
+        // Respuestas correctas para cada evaluación
+        const respuestas = {
+            matematicas: ['b', 'a', 'b', 'b', 'b'],
+            fisica: ['a', 'b', 'b', 'a', 'b'],
+            quimica: ['c', 'a', 'a', 'b', 'a'],
+            lenguaje: ['b', 'c', 'a', 'b', 'a']
+        };
+
+        function calificar(tab) {
+            let correctas = 0;
+            for (let i = 1; i <= 5; i++) {
+                const radios = document.getElementsByName(tab[0] + i);
+                let seleccionada = '';
+                for (const radio of radios) {
+                    if (radio.checked) {
+                        seleccionada = radio.value;
+                        break;
+                    }
+                }
+                if (seleccionada === respuestas[tab][i - 1]) {
+                    correctas++;
+                }
+            }
+            document.getElementById('result-' + tab).innerHTML =
+                `Obtuviste <strong>${correctas}</strong> de 5 respuestas correctas.`;
+        }
+    </script>
+
+</body>
+</html>
